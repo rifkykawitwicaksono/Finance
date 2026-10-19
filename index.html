@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FFB7B2">
+  <meta name="description" content="Pencatat keuangan pribadi pastel yang manis bersama Bubu & Dudu.">
+  <title>Bubu & Dudu — Catatan Keuangan</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <div class="wallpaper-layer" aria-hidden="true"></div>
+  <div class="wallpaper-shade" aria-hidden="true"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Bubu dan Dudu, beranda">
+        <span class="brand-mark" aria-hidden="true">🐼</span>
+        <span><strong>Bubu <i>&</i> Dudu</strong><small>little steps, big savings</small></span>
+      </a>
+      <button class="icon-button" id="openWallpaper" type="button" aria-label="Pengaturan wallpaper" title="Pengaturan tampilan">🎨</button>
+    </header>
+
+    <main>
+      <section class="hero glass-card" aria-labelledby="welcomeTitle">
+        <div class="hero-copy">
+          <p class="eyebrow">YOUR LITTLE MONEY JOURNAL</p>
+          <h1 id="welcomeTitle">Hai, bestie! <span class="wave">✦</span></h1>
+          <p id="mascotMessage" class="mascot-message">Bubu & Dudu siap menemani kamu mengatur uang.</p>
+          <div class="hero-pills">
+            <span>☁️ pelan-pelan aja</span><span>♡ kamu pasti bisa</span>
+          </div>
+        </div>
+        <button class="mascot-stage" id="mascotButton" type="button" aria-label="Klik untuk menyemangati maskot">
+          <span class="sparkle sparkle-one">✦</span>
+          <span class="bear panda" aria-hidden="true"><span class="ear left"></span><span class="ear right"></span><span class="eye-patch left"><i></i></span><span class="eye-patch right"><i></i></span><span class="snout"><i></i></span><span class="blush left"></span><span class="blush right"></span></span>
+          <span class="bear brown" aria-hidden="true"><span class="ear left"></span><span class="ear right"></span><span class="face"><span class="eye left"></span><span class="eye right"></span><span class="muzzle"><i></i></span></span><span class="blush left"></span><span class="blush right"></span></span>
+          <span class="mascot-caption">Bubu + Dudu</span>
+          <span class="sparkle sparkle-two">♡</span>
+        </button>
+      </section>
+
+      <section class="summary-grid" aria-label="Ringkasan keuangan">
+        <article class="summary-card glass-card balance-card"><div class="summary-icon">💰</div><p>Total Saldo</p><h2 id="totalBalance">Rp0</h2><small>saldo dari semua transaksi</small></article>
+        <article class="summary-card glass-card income-card"><div class="summary-icon">🌷</div><p>Pemasukan Bulan Ini</p><h2 id="monthIncome">Rp0</h2><small>uang yang masuk</small></article>
+        <article class="summary-card glass-card expense-card"><div class="summary-icon">🧋</div><p>Pengeluaran Bulan Ini</p><h2 id="monthExpense">Rp0</h2><small>uang yang keluar</small></article>
+        <article class="summary-card glass-card savings-card"><div class="summary-icon">🐷</div><p>Savings Rate</p><h2 id="savingsRate">0%</h2><small>pemasukan yang berhasil disimpan</small></article>
+      </section>
+
+      <div class="content-grid">
+        <section class="glass-card panel" id="transactionFormPanel">
+          <div class="section-heading"><div><p class="eyebrow">LET'S TRACK IT</p><h2 id="formTitle">Tambah transaksi</h2></div><span class="heading-sticker">✿</span></div>
+          <form id="transactionForm">
+            <input type="hidden" id="transactionId">
+            <fieldset class="type-toggle"><legend class="sr-only">Jenis transaksi</legend>
+              <label class="type-option income-option"><input type="radio" name="type" value="income" checked><span>＋ Pemasukan</span></label>
+              <label class="type-option expense-option"><input type="radio" name="type" value="expense"><span>－ Pengeluaran</span></label>
+            </fieldset>
+            <label class="field-label" for="amount">Jumlah (Rp)</label>
+            <div class="amount-wrap"><span>Rp</span><input id="amount" name="amount" type="number" min="1" step="1" placeholder="50000" required inputmode="numeric"></div>
+            <div class="form-row">
+              <div><label class="field-label" for="category">Kategori</label><select id="category" name="category" required></select></div>
+              <div><label class="field-label" for="date">Tanggal</label><input id="date" name="date" type="date" required></div>
+            </div>
+            <label class="field-label" for="note">Catatan <span class="optional">(opsional)</span></label>
+            <input id="note" name="note" type="text" maxlength="120" placeholder="Contoh: gaji, kopi, groceries...">
+            <div class="form-actions"><button class="button button-primary" id="saveTransaction" type="submit">♡ Simpan transaksi</button><button class="button button-quiet hidden" id="cancelEdit" type="button">Batal</button></div>
+            <p class="form-hint">Data tersimpan di perangkat ini, bukan di server.</p>
+          </form>
+        </section>
+
+        <section class="glass-card panel">
+          <div class="section-heading"><div><p class="eyebrow">YOUR MONEY STORY</p><h2>Ringkasan bulanan</h2></div><span class="heading-sticker">☾</span></div>
+          <div class="chart-wrap"><canvas id="expenseChart" aria-label="Grafik donat distribusi pengeluaran" role="img"></canvas><div id="donutFallback" class="chart-fallback hidden">Tambahkan transaksi pengeluaran untuk melihat grafik.</div></div>
+          <div class="chart-legend-note">Distribusi pengeluaran berdasarkan kategori</div>
+          <div class="chart-wrap bar-chart-wrap"><canvas id="monthlyChart" aria-label="Grafik batang pemasukan dan pengeluaran" role="img"></canvas><div id="barFallback" class="chart-fallback hidden">Grafik akan muncul setelah ada transaksi.</div></div>
+        </section>
+      </div>
+
+      <section class="glass-card panel">
+        <div class="section-heading section-heading-wrap"><div><p class="eyebrow">SPEND WITH A PLAN</p><h2>Budget kategori</h2><p class="section-subtitle">Atur batas pengeluaran supaya uang jajan tetap aman.</p></div><button id="editBudgets" class="button button-soft" type="button">⚙ Atur budget</button></div>
+        <div id="budgetList" class="budget-list"></div>
+        <div id="budgetEditor" class="budget-editor hidden">
+          <div class="budget-editor-heading"><strong>Atur batas bulanan</strong><small>Isi 0 jika kategori tidak dibatasi.</small></div>
+          <form id="budgetForm"><div id="budgetInputs" class="budget-input-grid"></div><div class="form-actions"><button class="button button-primary" type="submit">Simpan budget</button><button class="button button-quiet" id="cancelBudgets" type="button">Tutup</button></div></form>
+        </div>
+      </section>
+
+      <section class="glass-card panel transactions-panel">
+        <div class="section-heading section-heading-wrap"><div><p class="eyebrow">THE LITTLE DETAILS</p><h2>Daftar transaksi</h2><p class="section-subtitle">Catat yang kecil-kecil, lama-lama jadi kebiasaan baik.</p></div><span class="heading-sticker">♡</span></div>
+        <div class="filters">
+          <label class="search-field"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Cari catatan atau kategori..." aria-label="Cari transaksi"></label>
+          <select id="filterCategory" aria-label="Filter kategori"><option value="all">Semua kategori</option></select>
+          <select id="filterType" aria-label="Filter jenis"><option value="all">Semua jenis</option><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option></select>
+          <input id="filterMonth" type="month" aria-label="Filter bulan">
+          <button class="button button-quiet" id="clearFilters" type="button">Reset filter</button>
+        </div>
+        <div class="transaction-list" id="transactionList"></div>
+        <div class="list-footer"><span id="transactionCount">0 transaksi</span><button id="exportCsv" class="text-button" type="button">↗ Ekspor CSV</button></div>
+      </section>
+    </main>
+    <footer class="footer"><span>Made with ♡ by Bubu & Dudu</span><span>Keuangan lebih rapi, hati lebih happy.</span></footer>
+  </div>
+
+  <dialog id="wallpaperDialog" class="settings-dialog">
+    <form method="dialog" class="dialog-close-row"><button class="icon-button" aria-label="Tutup pengaturan">✕</button></form>
+    <div class="section-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2>Custom wallpaper</h2><p class="section-subtitle">Bikin jurnal keuanganmu terasa seperti ruang kecil yang nyaman.</p></div><span class="heading-sticker">🎀</span></div>
+    <div class="wallpaper-presets">
+      <button type="button" class="preset-card preset-peach" data-preset="peach"><span>🍑</span><strong>Peachy</strong></button>
+      <button type="button" class="preset-card preset-sky" data-preset="sky"><span>☁️</span><strong>Dreamy sky</strong></button>
+      <button type="button" class="preset-card preset-flower" data-preset="flower"><span>🌼</span><strong>Flower garden</strong></button>
+      <button type="button" class="preset-card preset-night" data-preset="night"><span>🌙</span><strong>Lavender night</strong></button>
+    </div>
+    <label class="field-label" for="wallpaperUpload">Atau unggah gambar sendiri</label>
+    <input id="wallpaperUpload" type="file" accept="image/*" class="file-input">
+    <p class="form-hint">Gambar disimpan di browser perangkat ini. Gunakan gambar berukuran kecil agar penyimpanan tidak penuh.</p>
+    <div class="slider-row"><label for="blurSlider">Efek blur <strong id="blurValue">8 px</strong></label><input id="blurSlider" type="range" min="0" max="20" value="8"></div>
+    <div class="slider-row"><label for="overlaySlider">Kegelapan overlay <strong id="overlayValue">15%</strong></label><input id="overlaySlider" type="range" min="0" max="80" value="15"></div>
+    <div class="form-actions"><button id="resetWallpaper" class="button button-quiet" type="button">Reset ke default</button><button id="saveWallpaper" class="button button-primary" type="button">Selesai ♡</button></div>
+    <p id="wallpaperStatus" class="form-hint" role="status"></p>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(err => console.warn("Service worker belum aktif:", err)));
+    }
+  </script>
+</body>
+</html>
